@@ -1,5 +1,6 @@
 import React from 'react'
 import logo from './common/images/icon.png';
+import "./navBar.css"
 
 import {
     DropdownItem,
@@ -9,20 +10,23 @@ import {
     Navbar,
     NavbarBrand,
     NavLink,
-    UncontrolledDropdown
+    UncontrolledDropdown,
+    Button,
+    Form
 } from 'reactstrap';
 
 const textStyle = {
     color: 'white',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    fontFamily: 'Serif'
 };
 
 const NavigationBar = () => (
-    <div>
-        <Navbar color="dark" light expand="md">
+    <div className='color-nav'>
+        <Navbar  className='color-nav' variant="light" light expand="md">
             <NavbarBrand href="/">
                 <img src={logo} width={"50"}
-                     height={"35"} />
+                     height={"50"} />
             </NavbarBrand>
             <Nav className="ms-auto" navbar>
 
@@ -33,13 +37,17 @@ const NavigationBar = () => (
                     <DropdownMenu end >
 
                         <DropdownItem>
-                            <NavLink href="/person">Persons</NavLink>
+                            <NavLink href="/user">User</NavLink>
+                            <NavLink href="/admin">Admin</NavLink>
                         </DropdownItem>
 
 
                     </DropdownMenu>
                 </UncontrolledDropdown>
 
+                <Form pullRight> 
+                    <Button bsStyle="primary" className = "color-button">Login</Button>
+                </Form>
             </Nav>
         </Navbar>
     </div>

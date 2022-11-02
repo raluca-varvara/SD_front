@@ -1,0 +1,10 @@
+.color-nav{
+    background-color: rgb(12, 59, 46);
+}
+.color-button{
+    background-color: rgb(255, 161, 60);
+    color: rgb(12, 59, 46);
+    margin: 0 20px;
+    font-family: 'Serif';
+    font-weight: bold;
+}

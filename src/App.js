@@ -5,6 +5,7 @@ import './App.css';
 import ErrorPage from './common/errors/error-page';
 import NavigationBar from './navBar';
 import UserContainer from './user/user-container'
+import AdminContainer from './admin/admin-container'
 import Home from './home/home-container'
 
 function App() {
@@ -14,24 +15,11 @@ function App() {
       <div>
         <NavigationBar />
         <Routes>
-            <Route
-                exact
-                path='/'
-                render={() => <Home/>}
-              />
-
-              <Route
-                exact
-                path='/user'
-                render={() => <UserContainer/>}
-              />
-
-              {/*Error*/}
-              <Route
-                exact
-                path='/error'
-                render={() => <ErrorPage/>}
-              />
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/user" element={<UserContainer />}></Route>
+            <Route path="/admin" element={<AdminContainer />}></Route>
+            {/*Error*/}
+            <Route path="/error" element={<ErrorPage />}></Route>
         </Routes>
           
         </div>
