@@ -1,5 +1,7 @@
 .color-nav{
     background-color: rgb(12, 59, 46);
+    position: fixed;
+    width: 100%;
 }
 .color-button{
     background-color: rgb(255, 161, 60);

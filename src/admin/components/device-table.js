@@ -3,12 +3,17 @@ import React from "react";
 import "../../common/styles/table-person.css"
 
 
-const showItem = (item, i) => {
+const showItem = (item) => {
+        let owner = "none"
+        console.log(item.owner)
+        
         return (
-            <tr key={"item-" + i}>
+            <tr>
                 <th scope = "row">{item.id}</th>
-                <td><input type="text" value = {item.name}></input></td>
-                <td><input type="text" value = {item.role}></input></td>
+                <td><input type="text" value = {item.description}></input></td>
+                <td><input type="text" value = {item.address}></input></td>
+                <td><input type="text" value = {item.maxHourlyEnergyC}></input></td>
+                <td>{owner}</td>
                 <td><button type="button" class="button_style">Update</button></td>
                 <td><button type="button" class="button_style">Delete</button></td>
             </tr>
@@ -16,7 +21,7 @@ const showItem = (item, i) => {
 }
 
 
-class PersonTable extends React.Component {
+class DeviceTable extends React.Component {
 
     constructor(props) {
         super(props);
@@ -24,24 +29,33 @@ class PersonTable extends React.Component {
             tableData: this.props.tableData
         };
     }
-    
+
     componentWillReceiveProps(nextProps) {
         this.setState({tableData: nextProps.tableData});
     }
 
-    handleNameChanged(i, event) {
+    handleDescriptionChanged(i, event) {
         var items = this.state.tableData;
       
-        items[i].name = event.target.value;
+        items[i].description = event.target.value;
       
         this.setState({
           tableData: items
         });
     }
-    handleRoleChanged(i, event) {
+    handleAddressChanged(i, event) {
         var items = this.state.tableData;
       
-        items[i].role = event.target.value;
+        items[i].address = event.target.value;
+      
+        this.setState({
+          tableData: items
+        });
+    }
+    handleEnergyChanged(i, event) {
+        var items = this.state.tableData;
+      
+        items[i].maxHourlyEnergyC = event.target.value;
       
         this.setState({
           tableData: items
@@ -54,7 +68,7 @@ class PersonTable extends React.Component {
         const requestOptions = {
             method: "DELETE",
           }
-        fetch("http://localhost:8080/admin/" + items[i].id,requestOptions).then(
+        fetch("http://localhost:8080/admindevice/" + items[i].id,requestOptions).then(
                 function(response) {
                   
                     if (response.ok) {
@@ -77,12 +91,9 @@ class PersonTable extends React.Component {
 
     handleUpdateButton(i) {
         var items = this.state.tableData;
-        let r = "CLIENT"
-        if(items[i].role=="ADMIN"){
-            r="ADMIN"
-        }
 
-        let user = {'id': items[i].id,'name': items[i].name, 'role': r}
+
+        let user = {'id': items[i].id,'description': items[i].description, 'address': items[i].address, 'owner':items[i].owner, "energyMeasurements":items[i].energyMeasurements, "maxHourlyEnergyC":items[i].maxHourlyEnergyC}
         console.log(items[i].name)
         const requestOptions = {
           method: "PUT",
@@ -91,7 +102,7 @@ class PersonTable extends React.Component {
           },
           body: JSON.stringify(user)
         }
-        fetch("http://localhost:8080/admin", requestOptions).then(
+        fetch("http://localhost:8080/admindevice", requestOptions).then(
                 function(response) {
                   
                     if (response.ok) {
@@ -112,25 +123,33 @@ class PersonTable extends React.Component {
             });
     }
 
+
+
     renderRows(){
         var context = this;
 
         return  this.state.tableData.map(function(item, i) {
-            
+            let owner = "none"
+            if(item.owner !== null){
+                owner = item.owner.name
+                //console.log(item.owner)
+            }
             return (
                 
                 <tr key={"item-" + i}>
                     {/* <th scope = "row">{item.id}</th> */}
                     <th scope = "row">{i}</th>
-                    <td><input type="text" value = {item.name} onChange={context.handleNameChanged.bind(context, i)}></input></td>
-                    <td><input type="text" value = {item.role} onChange={context.handleRoleChanged.bind(context, i)}></input></td>
+                    <td><input type="text" value = {item.description} onChange={context.handleDescriptionChanged.bind(context, i)}></input></td>
+                    <td><input type="text" value = {item.address} onChange={context.handleAddressChanged.bind(context, i)}></input></td>
+                    <td><input type="text" value = {item.maxHourlyEnergyC} onChange={context.handleEnergyChanged.bind(context, i)}></input></td>
+                    <td>{owner}</td>
                     <td><button type="button" class="button_style" onClick={context.handleUpdateButton.bind(context, i)}>Update</button></td>
                     <td><button type="button" class="button_style" onClick={context.handleItemDelete.bind(context, i)}>Delete</button></td>
                 </tr>
             );
         })
     }
-
+    
     render() {
         console.log(this.state.tableData)
         return (
@@ -139,14 +158,15 @@ class PersonTable extends React.Component {
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Role</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Hourly consumption</th>
+                            <th scope="col">Owner</th>
                             <th scope="col">Update</th>
                             <th scope="col">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {/* {this.state.tableData.map(showItem)} */}
                         {this.renderRows()}
                     </tbody>
                     </table>
@@ -155,4 +175,4 @@ class PersonTable extends React.Component {
     }
 }
 
-export default PersonTable;
+export default DeviceTable;

@@ -1,0 +1,13 @@
+.formsStyles{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+
+    
+}
+.half{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+}

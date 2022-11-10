@@ -17,6 +17,8 @@ const backgroundStyle = {
 };
 const textStyle = {color: 'white', fontFamily:"Serif"};
 
+const headerStyle = {color: 'white', fontFamily:"Serif", fontWeight:"bold", padding:"40px", paddingTop: "90px"};
+
 class Home extends React.Component {
 
 
@@ -26,7 +28,7 @@ class Home extends React.Component {
 
             <div style = {backgroundStyle}>
                     <Container fluid >
-                        <h1 className="display-3" style={textStyle}>Smart Devices Monitoring Platform</h1>
+                        <h1 className="display-3" style={headerStyle}>Smart Devices Monitoring Platform</h1>
                         <p className="lead" style={textStyle}> <b>Enabling real time monitoring of devices energy consumption, for a better management of resources consuption, for a better greener future.</b> </p>
                         <hr className="my-2"/>
 

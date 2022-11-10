@@ -1,0 +1,23 @@
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: rgba(165, 192, 170,.7);
+ }
+
+ .table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color:rgba(187, 138, 82,.7);
+ }
+ .table-striped > thead {
+    background-color:rgb(12, 59, 46);
+    color:white;
+ }
+ .table-striped{
+    font-family:"Serif";
+    border-radius:15px;
+
+ }
+ .button_style{
+    border-radius: 5px;
+    background-color: rgb(255, 161, 60);
+    color: rgb(12, 59, 46);
+    font-family: 'Serif';
+    font-weight: bold;
+ }

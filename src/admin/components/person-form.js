@@ -1,196 +1,95 @@
 import React from 'react';
-//import validate from "./validators/person-validators";
-// import Button from "react-bootstrap/Button";
-// import * as API_USERS from "../api/person-api";
-// import APIResponseErrorMessage from "../../commons/errorhandling/api-response-error-message";
 import {Col, Row, Button} from "reactstrap";
 import { FormGroup, Input, Label} from 'reactstrap';
+import "./person-form.css"
+const textStyle = {color: 'white', fontFamily:"Serif"};
+
+const headerStyle = {color: 'rgb(12, 59, 46)', fontFamily:"Serif", fontWeight:"bold", padding:"10px 10px"};
 
 
 
 class PersonForm extends React.Component {
-
     constructor(props) {
-        // super(props);
-        // this.toggleForm = this.toggleForm.bind(this);
-        // this.reloadHandler = this.props.reloadHandler;
-
-        // this.state = {
-
-        //     errorStatus: 0,
-        //     error: null,
-
-        //     formIsValid: false,
-
-        //     formControls: {
-        //         name: {
-        //             value: '',
-        //             placeholder: 'What is your name?...',
-        //             valid: false,
-        //             touched: false,
-        //             validationRules: {
-        //                 minLength: 3,
-        //                 isRequired: true
-        //             }
-        //         },
-        //         email: {
-        //             value: '',
-        //             placeholder: 'Email...',
-        //             valid: false,
-        //             touched: false,
-        //             validationRules: {
-        //                 emailValidator: true
-        //             }
-        //         },
-        //         age: {
-        //             value: '',
-        //             placeholder: 'Age...',
-        //             valid: false,
-        //             touched: false,
-        //         },
-        //         address: {
-        //             value: '',
-        //             placeholder: 'Cluj, Zorilor, Str. Lalelelor 21...',
-        //             valid: false,
-        //             touched: false,
-        //         },
-        //     }
-        // };
-
-        // this.handleChange = this.handleChange.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    toggleForm() {
-        this.setState({collapseForm: !this.state.collapseForm});
-    }
-
-
-    handleChange = event => {
-
-        const name = event.target.name;
-        const value = event.target.value;
-
-        const updatedControls = this.state.formControls;
-
-        const updatedFormElement = updatedControls[name];
-
-        updatedFormElement.value = value;
-        updatedFormElement.touched = true;
-        // updatedFormElement.valid = validate(value, updatedFormElement.validationRules);
-        updatedControls[name] = updatedFormElement;
-
-        let formIsValid = true;
-        for (let updatedFormElementName in updatedControls) {
-            formIsValid = updatedControls[updatedFormElementName].valid && formIsValid;
+        super(props);
+        this.state = {name: '', password: '',role:''};
+        
+        this.handleChangeName = this.handleChangeName.bind(this);
+        this.handleChangeRole = this.handleChangeRole.bind(this);
+        this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        //this.props.updateTables = this.props.updateTables.bind(this)
+      }
+    
+      handleChangeName(event) {
+        console.log(event.target.value)
+        this.setState({name: event.target.value});
+      }
+      handleChangePassword(event) {
+        this.setState({password: event.target.value});
+      }
+      handleChangeRole(event) {
+        console.log(event.target.value)
+        this.setState({role: event.target.value});
+      }
+      
+    
+      async handleSubmit(event) {
+        //alert('A name was submitted: ' + this.state.name);
+        console.log(this.state.name)
+        let roleUser = 0
+        if(this.state.role=='Admin' || this.state.role == "ADMIN" || this.state.role=='admin'){
+          roleUser = 1
+        }else{
+          roleUser=0
         }
-
-        this.setState({
-            formControls: updatedControls,
-            formIsValid: formIsValid
-        });
-
-    };
-
-    // registerPerson(person) {
-    //     return API_USERS.postPerson(person, (result, status, error) => {
-    //         if (result !== null && (status === 200 || status === 201)) {
-    //             console.log("Successfully inserted person with id: " + result);
-    //             this.reloadHandler();
-    //         } else {
-    //             this.setState(({
-    //                 errorStatus: status,
-    //                 error: error
-    //             }));
-    //         }
-    //     });
-    // }
-
-    handleSubmit() {
-        let person = {
-            name: this.state.formControls.name.value,
-            email: this.state.formControls.email.value,
-            age: this.state.formControls.age.value,
-            address: this.state.formControls.address.value
-        };
-
-        console.log(person);
-        this.registerPerson(person);
-    }
-
-    render() {
+        let user = {'name': this.state.name, 'password': this.state.password, 'role': roleUser}
+        event.preventDefault();
+        const requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(user)
+        }
+        await fetch("http://localhost:8080/admin",requestOptions).then(
+              function(response) {
+                
+                  if (response.ok) {
+                     response.json().then(json => {
+                      console.log(json)
+                      window.location.reload(false)
+                     
+                     });
+                  }
+              
+              })
+          .catch(function (err) {
+              //catch any other unexpected error, and set custom code for error = 1
+              //callback(null, 1, err)
+              console.log(err);
+          });
+          
+      }
+    
+      render() {
         return (
             <div>
-
-                <FormGroup id='name'>
-                    <Label for='nameField'> Name: </Label>
-                    <Input name='name' id='nameField' 
-                        //     placeholder={this.state.formControls.name.placeholder}
-                        //    onChange={this.handleChange}
-                        //    defaultValue={this.state.formControls.name.value}
-                        //    touched={this.state.formControls.name.touched? 1 : 0}
-                        //    valid={this.state.formControls.name.valid}
-                        //    required
-                    />
-                    {/* {this.state.formControls.name.touched && !this.state.formControls.name.valid &&
-                    <div className={"error-message row"}> * Name must have at least 3 characters </div>} */}
-                </FormGroup>
-
-                <FormGroup id='email'>
-                    <Label for='emailField'> Email: </Label>
-                    <Input name='email' id='emailField' 
-                        //     placeholder={this.state.formControls.email.placeholder}
-                        //    onChange={this.handleChange}
-                        //    defaultValue={this.state.formControls.email.value}
-                        //    touched={this.state.formControls.email.touched? 1 : 0}
-                        //    valid={this.state.formControls.email.valid}
-                           required
-                    />
-                    {/* {this.state.formControls.email.touched && !this.state.formControls.email.valid &&
-                    <div className={"error-message"}> * Email must have a valid format</div>} */}
-                </FormGroup>
-
-                <FormGroup id='address'>
-                    <Label for='addressField'> Address: </Label>
-                    <Input name='address' id='addressField' 
-                        //    placeholder={this.state.formControls.address.placeholder}
-                        //    onChange={this.handleChange}
-                        //    defaultValue={this.state.formControls.address.value}
-                        //    touched={this.state.formControls.address.touched? 1 : 0}
-                        //    valid={this.state.formControls.address.valid}
-                           required
-                    />
-                </FormGroup>
-
-                <FormGroup id='age'>
-                    <Label for='ageField'> Age: </Label>
-                    <Input name='age' id='ageField' 
-                        //     placeholder={this.state.formControls.age.placeholder}
-                        //    min={0} max={100} type="number"
-                        //    onChange={this.handleChange}
-                        //    defaultValue={this.state.formControls.age.value}
-                        //    touched={this.state.formControls.age.touched? 1 : 0}
-                        //    valid={this.state.formControls.age.valid}
-                           required
-                    />
-                </FormGroup>
-
-                    <Row>
-                        <Col sm={{size: '4', offset: 8}}>
-                            <Button type={"submit"} 
-                            // disabled={!this.state.formIsValid} onClick={this.handleSubmit}
-                            >  
-                            Submit </Button>
-                        </Col>
-                    </Row>
-
-                {/* {
-                    this.state.errorStatus > 0 &&
-                    <APIResponseErrorMessage errorStatus={this.state.errorStatus} error={this.state.error}/>
-                } */}
+                <form className='formStyle' onSubmit={this.handleSubmit}>
+                    <h4 style = {headerStyle}>Add user:</h4>
+                    
+                        <label> Name: </label>
+                        <input name='username' type="text" id="username" value={this.state.name} onChange={this.handleChangeName} />
+                        <label> Password: </label>
+                        <input name='password' type="text" id="userpassword" value={this.state.password} onChange={this.handleChangePassword} />
+                        <label> Role: </label>
+                        <input name='role' type="text" id="userrole" value={this.state.role} onChange={this.handleChangeRole} />
+                      
+                    <button className='color-button' type="submit">Submit</button>
+                </form>
             </div>
-        ) ;
-    }
+          
+        );
+      }
 }
 
 export default PersonForm;

@@ -1,6 +1,7 @@
 import React from 'react'
 import logo from './common/images/icon.png';
 import "./navBar.css"
+import { useNavigate } from "react-router-dom";
 
 import {
     DropdownItem,
@@ -21,8 +22,22 @@ const textStyle = {
     fontFamily: 'Serif'
 };
 
-const NavigationBar = () => (
-    <div className='color-nav'>
+
+
+function NavigationBar(){
+    let navigate = useNavigate(); 
+    const routeChange = () =>{ 
+        let path = `/login`; 
+        navigate(path);
+    }
+    const logout = () =>{ 
+        window.localStorage.setItem('MY_APP_STATE', null);
+        window.localStorage.setItem('MY_ROLE', null);
+        let path = `/`; 
+        navigate(path);
+    }
+    return(
+        <div className='color-nav'>
         <Navbar  className='color-nav' variant="light" light expand="md">
             <NavbarBrand href="/">
                 <img src={logo} width={"50"}
@@ -46,11 +61,14 @@ const NavigationBar = () => (
                 </UncontrolledDropdown>
 
                 <Form pullRight> 
-                    <Button bsStyle="primary" className = "color-button">Login</Button>
+                    <Button bsStyle="primary" className = "color-button" onClick={routeChange}>Login</Button>
+                    <Button bsStyle="primary" className = "color-button" onClick={logout}>Logout</Button>
                 </Form>
             </Nav>
         </Navbar>
     </div>
-);
+    )
+    
+};
 
 export default NavigationBar
